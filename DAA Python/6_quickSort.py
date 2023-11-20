@@ -1,44 +1,33 @@
 import random
 
-def deterministic_partition(arr, low, high):
-    pivot = arr[high]
-    i = low - 1
+# Deterministic QuickSort
+def deterministic_quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = arr[len(arr) // 2]  # Choosing middle element as pivot
+        lesser = [x for x in arr if x < pivot]
+        equal = [x for x in arr if x == pivot]
+        greater = [x for x in arr if x > pivot]
+        return deterministic_quicksort(lesser) + equal + deterministic_quicksort(greater)
 
-    for j in range(low, high):
-        if arr[j] <= pivot:
-            i += 1
-            arr[i], arr[j] = arr[j], arr[i]
-
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
-
-def deterministic_quicksort(arr, low, high):
-    if low < high:
-        pivot_index = deterministic_partition(arr, low, high)
-
-        deterministic_quicksort(arr, low, pivot_index - 1)
-        deterministic_quicksort(arr, pivot_index + 1, high)
-
-def randomized_partition(arr, low, high):
-    pivot_index = random.randint(low, high)
-    arr[pivot_index], arr[high] = arr[high], arr[pivot_index]
-    return deterministic_partition(arr, low, high)
-
-def randomized_quicksort(arr, low, high):
-    if low < high:
-        pivot_index = randomized_partition(arr, low, high)
-
-        randomized_quicksort(arr, low, pivot_index - 1)
-        randomized_quicksort(arr, pivot_index + 1, high)
+# Randomized QuickSort
+def randomized_quicksort(arr):
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = random.choice(arr)  # Choosing pivot randomly
+        lesser = [x for x in arr if x < pivot]
+        equal = [x for x in arr if x == pivot]
+        greater = [x for x in arr if x > pivot]
+        return randomized_quicksort(lesser) + equal + randomized_quicksort(greater)
 
 # Example usage:
-arr = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5]
-print("Original array:", arr)
+arr = [7, 2, 1, 6, 8, 5]
+print("Original Array:", arr)
 
-# Deterministic Quicksort
-deterministic_quicksort(arr.copy(), 0, len(arr) - 1)
-print("Sorted array (deterministic):", arr)
+sorted_deterministic = deterministic_quicksort(arr.copy())
+print("Sorted Array using Deterministic QuickSort:", sorted_deterministic)
 
-# Randomized Quicksort
-randomized_quicksort(arr.copy(), 0, len(arr) - 1)
-print("Sorted array (randomized):", arr)
+sorted_randomized = randomized_quicksort(arr.copy())
+print("Sorted Array using Randomized QuickSort:", sorted_randomized)
