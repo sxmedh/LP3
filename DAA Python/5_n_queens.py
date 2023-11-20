@@ -1,76 +1,65 @@
 # N-Queens Puzzle with Backtracking: Placing the First Queen and Generating the Final Matrix
 
-class NQBacktracking:
+# Function to print Chessboard
+def printSolution(board, x, y):
+    print()
+    print("N Queen Backtracking Solution: ")
+    print(f"Initial Position    (x: {x}, y: {y})")
+    print()
+    for line in board:
+        print(line)
 
-    # Constructor
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    # Function to print Chessboard
-    def printSolution(self, board):
-        print()
-        print("N Queen Backtracking Solution: ")
-        print(f"Initial Position    (x: {self.x}, y: {self.y})")
-        print()
-        for line in board:
-            print(line)
-
-    # Function to check if a square is attacked or not
-    def is_attack(self, i, j, board):
-        for k in range(0, N):
-            if board[i][k] == 1 or board[k][j] == 1:
-                return True
-        for k in range(0, N):
-            for l in range(0, N):
-                if (k+l == i+j) or (k-l == i-j):
-                    if board[k][l] == 1:
-                        return True
-        return False
-
-
-    # Utility function for solveNQ
-    def solveNQUtil(self, board, col):
-
-        if col >= N:
+# Function to check if a square is attacked or not
+def is_attack(i, j, board, N):
+    for k in range(0, N):
+        if board[i][k] == 1 or board[k][j] == 1:
             return True
-
-        if col == self.y:
-            return self.solveNQUtil(board, col + 1)
-
-        for i in range(N):
-            if i == self.x:
-                continue
-            if (not (self.is_attack(i, col, board))) and (board[i][col] != 1):
-                board[i][col] = 1
-                if self.solveNQUtil(board, col + 1):
+    for k in range(0, N):
+        for l in range(0, N):
+            if (k + l == i + j) or (k - l == i - j):
+                if board[k][l] == 1:
                     return True
-                board[i][col] = 0
+    return False
 
-        return False
-
-        # Function to solve N Queen
-    def solveNQ(self):
-        board = [[0 for _ in range(N)] for _ in range(N)]
-        board[self.x][self.y] = 1
-
-        if not self.solveNQUtil(board, 0):
-            print()
-            print("Solution does not exist")
-            print()
-            return False
-
-        self.printSolution(board)
+# Utility function for solveNQ
+def solveNQUtil(board, col, x, y, N):
+    if col >= N:
         return True
 
-N = int(input("Enter the size of the board (N): "))
+    if col == y:
+        return solveNQUtil(board, col + 1, x, y, N)
 
-# Get the initial position (x, y) from the user
-x = int(input("Enter the initial row: "))
-y = int(input("Enter the initial column: "))
+    for i in range(N):
+        if i == x:
+            continue
+        if (not (is_attack(i, col, board, N))) and (board[i][col] != 1):
+            board[i][col] = 1
+            if solveNQUtil(board, col + 1, x, y, N):
+                return True
+            board[i][col] = 0
 
-NQBt = NQBacktracking(x, y)
-NQBt.solveNQ()
+    return False
+
+# Function to solve N Queen
+def solveNQ():
+    N = int(input("Enter the size of the board (N): "))
+    x = int(input("Enter the initial row: "))
+    y = int(input("Enter the initial column: "))
+
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    board[x][y] = 1
+
+    if not solveNQUtil(board, 0, x, y, N):
+        print()
+        print("Solution does not exist")
+        print()
+        return False
+
+    printSolution(board, x, y)
+    return True
+
+solveNQ()
+
 
 # ----------------------------------------------------------------------
 
