@@ -28,19 +28,6 @@ class NQBacktracking:
                         return True
         return False
 
-    # Function to solve N Queen
-    def solveNQ(self):
-        board = [[0 for _ in range(N)] for _ in range(N)]
-        board[self.x][self.y] = 1
-
-        if not self.solveNQUtil(board, 0):
-            print()
-            print("Solution does not exist")
-            print()
-            return False
-
-        self.printSolution(board)
-        return True
 
     # Utility function for solveNQ
     def solveNQUtil(self, board, col):
@@ -62,6 +49,19 @@ class NQBacktracking:
 
         return False
 
+        # Function to solve N Queen
+    def solveNQ(self):
+        board = [[0 for _ in range(N)] for _ in range(N)]
+        board[self.x][self.y] = 1
+
+        if not self.solveNQUtil(board, 0):
+            print()
+            print("Solution does not exist")
+            print()
+            return False
+
+        self.printSolution(board)
+        return True
 
 N = int(input("Enter the size of the board (N): "))
 
